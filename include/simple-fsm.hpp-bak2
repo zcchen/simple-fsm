@@ -1,0 +1,109 @@
+#ifndef ZCCHEN_SIMPLE_FSM_HPP
+#define ZCCHEN_SIMPLE_FSM_HPP
+
+#include <map>
+#include <string>
+#include <stdexcept>
+#include <memory>
+
+namespace zcchen {
+namespace fsm {
+
+class StateMachine;
+class Event;
+
+
+class error {
+    class unmatched_state : public std::logic_error {
+    public:
+        explicit unmatched_state(const char* what_arg);
+    };
+};
+
+
+class StateList
+{
+public:
+    typedef std::pair<const std::string, std::shared_ptr<StateMachine>> State;
+
+    /* @brief: The constructor to create the StateList() object.
+     * @param: std::pair<const char* state_name, StateList*>(...) ...
+     * example as below:
+     *  auto s0 = StateList(
+     *      StateList::State("aaa", nullptr),
+     *      StateList::State("bbb", nullptr),
+     *      StateList::State("ccc", new StateMachine(
+     *              StateList::State("ddd", nullptr)
+     *          )
+     *     )
+     *  );
+     * */
+    template <class ... State_>
+    StateList(State_ ... args) :
+        // define them by class order
+        current(""),
+        states({State("", nullptr), args ... })
+    {}
+    ~StateList()
+    {}
+
+    /**
+     * @brief getState() is to get the current state
+     * @param recursiveDepth, to check how max recursive Depth will be loop.
+     *        -1, default, means no limit
+     *        >= 0, the max recursive depth
+     * @return current state, as const char* format
+     */
+    const char* getState(int recursiveDepth = -1);
+
+private:
+    /**
+     * @brief do_transit() is to transit the state internally.
+     * @param new_state, the new state string.
+     *        "", exit this state.
+     * @return current state, as const char* format
+     */
+    const char* do_transit(const char* new_state);  // for friend class use ONLY
+    friend class Transit;
+
+    //const std::string def;
+    std::string current;
+    const std::map<const std::string, std::shared_ptr<StateMachine>> states;
+};
+
+class Transit
+{
+public:
+    Transit(const std::shared_ptr<StateMachine> sm, const std::shared_ptr<Event> ev,
+            const std::string& from, const std::string& to) :
+        stateMachine(sm),
+        event(ev)
+    {};
+
+private:
+    const std::shared_ptr<StateMachine> stateMachine;
+    const std::shared_ptr<Event> event;
+};
+
+
+template<typename states>
+class StateMachine
+{
+public:
+    template <class ... Transit>
+    StateMachine(Transit ... transit) :
+        state(states),
+        transitList({transit ...})
+    {}
+
+    ~StateMachine()
+    {}
+
+private:
+    StateList state;
+    std::map<const std::string, Transit> transitList;
+};
+
+};
+};
+#endif /* ifndef ZCCHEN_SIMPLE_FSM_HPP */

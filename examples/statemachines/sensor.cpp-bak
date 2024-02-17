@@ -1,0 +1,50 @@
+#include "simple-fsm.hpp"
+
+#include <iostream>
+
+class Sensor : public zcchen::fsm::StateMachine
+{
+public:
+    struct InitEvent : public zcchen::fsm::Event<InitEvent> {};
+
+protected:
+    virtual bool transit_init(const InitEvent& ev)
+    {
+        std::cout << "transit_init..." << std::endl;
+        return true;
+    };
+
+private:
+    //StateList_t m_states = {};
+    StateList_t m_states = {
+        State_t{".", nullptr},
+        State_t{"initializing", nullptr},
+        State_t{"ready", nullptr},
+        State_t{"running", nullptr},
+        State_t{"", nullptr},
+    };
+    zcchen::fsm::TransitionTable m_trainsitions = zcchen::fsm::TransitionTable(this,
+        new zcchen::fsm::Transition<InitEvent>("init", ".", "initializing",
+            std::bind(&Sensor::transit_init, this, std::placeholders::_1))
+    );
+
+
+protected:
+    virtual const std::shared_ptr<StateList_t> get_states(void)
+    {
+        return std::shared_ptr<StateList_t>(&this->m_states);
+    }
+
+    virtual const std::shared_ptr<zcchen::fsm::TransitionTable> get_transitions(void)
+    {
+        //return std::shared_ptr<zcchen::fsm::TransitionTable>(&this->m_trainsitions);
+        return nullptr;
+    }
+
+};
+
+int main(void)
+{
+    Sensor s = Sensor();
+    return 0;
+}

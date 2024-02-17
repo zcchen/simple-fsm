@@ -5,8 +5,7 @@
 #include <map>
 #include <type_traits>
 
-namespace zcchen {
-namespace fsm {
+namespace simple_fsm {
 
 // --- The base class ---
 struct BaseEvent {};
@@ -23,11 +22,11 @@ struct Event : public BaseEvent
 {
 };
 
-template<typename states, typename from, typename to, typename event
-    std::
->
+template<typename states, typename from, typename to, typename event>
 struct Transit : public BaseTransit
 {
+private:
+    states = 
 };
 // ----------------------
 
@@ -59,6 +58,5 @@ protected:
 public:
 };
 
-};
 };
 #endif /* ifndef ZCCHEN_FSM_HPP */

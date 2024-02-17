@@ -1,0 +1,132 @@
+#include "simple-fsm.hpp"
+
+using namespace zcchen::fsm;
+
+StateMachine::StateMachine(const char* firstState) :
+    m_firstState(firstState)
+{
+    assert();
+}
+
+StateMachine::~StateMachine()
+{
+}
+
+void StateMachine::assert(void)
+{
+    //if (!get_states()->size()) {
+        //throw error::empty_size("m_states is NOT initialized.");
+    //}
+    //if (!get_transitions()->size()) {
+        //throw error::empty_size("m_transitions is NOT initialized.");
+    //}
+    //auto states = get_states();
+    //bool foundFirstState = false;
+    //for (StateMachine::StateList_t::iterator it = states->begin(); it != states->end(); ++it) {
+        //if (it->first == m_firstState) {
+            //foundFirstState = true;
+        //}
+    //}
+    //if (!foundFirstState) {
+        //throw error::unmatched_state("default state is NOT found.");
+    //}
+}
+
+const std::vector<std::string> StateMachine::listStates(void)
+{
+    std::vector<std::string> ret = {};
+    //auto states = get_states();
+    //for (StateMachine::StateList_t::iterator it = states->begin(); it != states->end(); ++it) {
+        //ret.push_back(it->first);
+    //}
+    return ret;
+}
+
+//const std::vector<const std::string&> StateMachine::listTransitions(void)
+//{
+    //return get_transitions()->namelist();
+//}
+
+const std::string& StateMachine::get_currentState() {
+    return m_current;
+}
+
+bool StateMachine::transit(const BaseEvent& event)
+{
+    /*
+     *auto current_valid_transitions = get_transitions()->find("", m_current);
+     *    [> find the matched transitions. <]
+     *for (size_t i = 0; i < current_valid_transitions.size(); ++i) {
+     *    [> if event is matched at least one of them. <]
+     *    auto v = current_valid_transitions[i];
+     *    if (v->getEventType() == event.getType()) {
+     *        if (v->exec(event)) {
+     *            m_current = v->getToState();
+     *            return true;
+     *        }
+     *        else {
+     *            return false;
+     *        }
+     *    }
+     *    else {
+     *        ; // skip the unmatched event.
+     *    }
+     *}
+     */
+    return false;
+}
+
+bool StateMachine::transit()
+{
+    /*
+     *auto e = m_events.front();
+     *return true;
+     *auto current_valid_transitions = get_transitions()->find("", m_current);
+     *    [> find the matched transitions. <]
+     *for (size_t i = 0; i < current_valid_transitions.size(); ++i) {
+     *    [> if event is matched at least one of them. <]
+     *    auto v = current_valid_transitions[i];
+     *    if (v->getEventType() == e->getType()) {
+     *        if (v->exec(*e)) {
+     *            m_current = v->getToState();
+     *            return true;
+     *        }
+     *        else {
+     *            return false;
+     *        }
+     *    }
+     *    else {
+     *        ; // skip the unmatched event.
+     *    }
+     *}
+     */
+    return false;
+}
+
+bool StateMachine::trigger(const BaseEvent& event)
+{
+    /*
+     *auto current_valid_transitions = get_transitions()->find("", m_current);
+     *    [> find the matched transitions. <]
+     *for (size_t i = 0; i < current_valid_transitions.size(); ++i) {
+     *    [> if event is matched at least one of them. <]
+     *    auto v = current_valid_transitions[i];
+     *    if (v->getEventType() == event.getType()) {
+     *        m_events.push(&event);
+     *        // return
+     *        return true;
+     *    }
+     *    else {
+     *        ; // skip the unmatched event.
+     *    }
+     *}
+     */
+    return false;
+}
+
+void StateMachine::cleanEvents(void)
+{
+    while (!m_events.empty()) {
+        m_events.pop();
+    }
+}

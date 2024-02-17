@@ -1,0 +1,58 @@
+#include "simple-fsm.hpp"
+
+using namespace zcchen::fsm;
+
+TransitionTable::~TransitionTable()
+{
+}
+
+size_t TransitionTable::size(void)
+{
+    return m_transitions.size();
+}
+
+const std::vector<std::string> TransitionTable::namelist(void)
+{
+    std::vector<std::string> ret = {};
+    for (const auto& tr : m_transitions) {
+        ret.push_back(tr->getName());
+    }
+    return ret;
+}
+
+const std::vector<TransitionTable::Transition_t*> TransitionTable::find(
+        const std::string& name, const std::string& fromState)
+{
+    std::vector<TransitionTable::Transition_t*> ret = {};
+    /*
+     *if (name != "" && fromState != "") {   // both matching
+     *    for (const auto& tr : m_transitions) {
+     *        if (name == tr->getName() && fromState == tr->getFromState()) {
+     *            //ret.push_back((TransitionTable::Transition_t&)(*tr));
+     *            ret.push_back(tr);
+     *        }
+     *    }
+     *}
+     *else if (name != "" && fromState == "") {   // only one matching
+     *    for (const auto& tr : m_transitions) {
+     *        if (name == tr->getName()) {
+     *            //ret.push_back((TransitionTable::Transition_t&)(*tr));
+     *            ret.push_back(tr);
+     *        }
+     *    }
+     *}
+     *else if (name == "" && fromState != "") {   // only one matching
+     *    for (const auto& tr : m_transitions) {
+     *        if (fromState == tr->getFromState()) {
+     *            //ret.push_back((TransitionTable::Transition_t&)(*tr));
+     *            ret.push_back(tr);
+     *        }
+     *    }
+     *}
+     *else {      // skip the empty query request
+     *    ;
+     *}
+     */
+    return ret;
+}
+

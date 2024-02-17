@@ -1,0 +1,15 @@
+#include "simple-fsm.hpp"
+
+#include <iostream>
+
+int main(void)
+{
+    auto sm = zcchen::fsm::StateMachine(
+            new zcchen::fsm::StateList(
+                    zcchen::fsm::StateList::State("aaa", nullptr),
+                    zcchen::fsm::StateList::State("bbb", nullptr)
+                )
+    );
+
+    return 0;
+}

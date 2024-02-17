@@ -1,0 +1,37 @@
+#include "simple-fsm.hpp"
+
+using namespace zcchen::fsm;
+
+// TODO: Add the iterator flag at least.
+const char* StateList::getState(int recursiveDepth)
+{
+    /*
+     *auto it = states.find(current);
+     *if (it == states.end()) {
+     *    // TODO: missing the key
+     *    return "";
+     *}
+     *else {
+     *    auto s = it->second;
+     *    if (nullptr != s && recursiveDepth != 0) {
+     *        return s->getState(recursiveDepth > 0 ? recursiveDepth - 1 : -1);
+     *    }
+     *    else {
+     *        return current.c_str();
+     *    }
+     *}
+     */
+    return current.c_str();
+}
+
+const char* StateList::do_transit(const char* state)
+{
+    if (states.count(state)) {
+        current = state;
+    }
+    //StateList* s = states.find(current)->second;
+    //if (s) {
+        //return s->do_transit(state);
+    //}
+    return getState();
+}

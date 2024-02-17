@@ -1,0 +1,22 @@
+#define private public
+
+#include "simple-fsm.hpp"
+
+#include <iostream>
+
+int main()
+{
+    auto s0 = zcchen::fsm::StateList(
+            zcchen::fsm::StateList::State("aaa", nullptr),
+            zcchen::fsm::StateList::State("bbb", nullptr)
+    );
+    for (const auto& [k, v] : s0.states) {
+        std::cout << "[" << k << "]" << ": " << v << ";" << std::endl;
+    }
+    std::cout << "Transit('bbb'): " << s0.do_transit("bbb") << std::endl;
+    std::cout << "current(0): " << s0.getState(0) << std::endl;
+    std::cout << "Transit('xxx'): " << s0.do_transit("xxx") << std::endl;
+    std::cout << "current(0): " << s0.getState(0) << std::endl;
+}
+
+#undef private
